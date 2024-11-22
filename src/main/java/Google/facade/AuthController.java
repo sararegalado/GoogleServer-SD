@@ -1,6 +1,7 @@
 package Google.facade;
 import java.util.Optional;
 
+import Google.dto.CredentialsDTO;
 import Google.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class AuthController {
             @Parameter(name = "email", description = "Email to check", required = true)
             @RequestParam String email) {
         Optional<Boolean> response = authService.checkUserExists(email);
-        if (response.isPresent()) {
+        if (response.equals(Optional.of(true))) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -46,8 +47,8 @@ public class AuthController {
 
     // Identification endpoint
     @Operation(
-            summary = "Identificate user",
-            description = "Identificates the user by checking the email and password.",
+            summary = "Identification of the user",
+            description = "Identification of the user by checking the email and password.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK: User validated"),
                     @ApiResponse(responseCode = "401", description = "Unauthorized: Invalid credentials"),
@@ -55,12 +56,11 @@ public class AuthController {
     )
     @PostMapping("/identification")
     public ResponseEntity<Void> userAuth(
-            @Parameter(name = "email", description = "User's email", required = true)
-            @RequestParam String email,
-            @Parameter(name = "password", description = "User's password", required = true)
-            @RequestParam String password) {
-        Optional<Boolean> response = authService.userAuth(email, password);
-        if (response.isPresent()) {
+            @Parameter(name="credentials", description="User's login credentials", required = true)
+            @RequestBody CredentialsDTO credentials
+    ) {
+        Optional<Boolean> response = authService.userAuth(credentials.getEmail(), credentials.getPassword());
+        if (response.equals(Optional.of(true))) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
