@@ -21,6 +21,7 @@ public class AuthService {
         return userRepository.findByEmail(email).isPresent() ? Optional.of(true) : Optional.of(false);
     }
     public Optional<Boolean> userAuth(String email, String password) {
+
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent() && user.get().getPassword().equals(password) ? Optional.of(true) : Optional.of(false);
     }
