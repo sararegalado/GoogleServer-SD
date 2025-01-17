@@ -29,12 +29,16 @@ public class DataInitializer {
             User u2 = new User("user2@google.es", "user2");
             User u3 = new User("user3@google.es", "user3");
             User u4 = new User("user4@opendeusto.es", "user4");
+            User u5 = new User("john.doe@example.com","password");
+            User u6 = new User("aitor.diez@opendeusto.es","abc");
 
             // Save users
             userRepository.save(u1);
             userRepository.save(u2);
             userRepository.save(u3);
             userRepository.save(u4);
+            userRepository.save(u5);
+            userRepository.save(u6);
             logger.info("Users saved");
         };
     }
